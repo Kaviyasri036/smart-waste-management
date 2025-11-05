@@ -1,0 +1,22 @@
+{% extends 'wasteapp/base.html' %}
+{% block content %}
+<h2>All Bins</h2>
+<table class="table">
+  <thead><tr><th>Name</th><th>Location</th><th>Fill %</th><th>Status</th><th>Action</th></tr></thead>
+  <tbody>
+    {% for b in bins %}
+      <tr>
+        <td>{{ b.name }}</td>
+        <td>{{ b.location }}</td>
+        <td>{{ b.fill_percent }}%</td>
+        <td>{{ b.status }}</td>
+        <td>
+          <a class="btn btn-sm btn-outline-success" href="{% url 'wasteapp:collect_bin' b.id %}">Collect</a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5">No bins yet</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

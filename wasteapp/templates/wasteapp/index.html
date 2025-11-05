@@ -1,0 +1,9 @@
+{% extends 'wasteapp/base.html' %}
+{% block content %}
+<div class="text-center">
+  <h1>Smart Waste Management</h1>
+  <p class="lead">Report full bins & help municipal collection teams.</p>
+  <a class="btn btn-primary" href="{% url 'wasteapp:report_bin' %}">Report a Bin</a>
+  <a class="btn btn-outline-primary" href="{% url 'wasteapp:bin_list' %}">View Bins</a>
+</div>
+{% endblock %}

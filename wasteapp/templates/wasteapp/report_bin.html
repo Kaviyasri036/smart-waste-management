@@ -1,0 +1,38 @@
+{% extends 'wasteapp/base.html' %}
+{% block content %}
+<h2>Report Bin</h2>
+<form method="post" id="reportForm">{% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-success" type="submit">Submit</button>
+</form>
+
+<hr>
+<h4>Quick report (AJAX)</h4>
+<div class="row">
+  <div class="col-md-6">
+    <input id="binName" class="form-control mb-2" placeholder="Bin name or location"/>
+    <input id="fillPercent" type="number" class="form-control mb-2" placeholder="Fill percent (0-100)"/>
+    <button id="ajaxReport" class="btn btn-primary">Send Quick Report</button>
+  </div>
+  <div class="col-md-6">
+    <div id="ajaxResult"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('ajaxReport').addEventListener('click', async () => {
+  const name = document.getElementById('binName').value;
+  const fill = document.getElementById('fillPercent').value;
+  const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  const form = new FormData();
+  form.append('name', name);
+  form.append('fill_percent', fill);
+  form.append('csrfmiddlewaretoken', csrf);
+  const res = await fetch("{% url 'wasteapp:api_report_bin' %}", {method:'POST', body: form});
+  const data = await res.json();
+  document.getElementById('ajaxResult').innerText = data.ok ? 'Reported! ID:' + data.id : 'Error';
+});
+</script>
+{% endblock %}
